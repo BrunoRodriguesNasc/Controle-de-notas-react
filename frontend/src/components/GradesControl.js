@@ -37,19 +37,26 @@ export default function GradesControl({ grades, onDelete, onPersist }) {
     grades: currentGrades
   });
 
+  const handleActionClick = (id, type) => {
+    console.log(id, type)
+  };
+
 
   return (
     <div className="container center">
-      {tableGrades.map(({id , grades}) => {
+      {tableGrades.map(({ id, grades }) => {
+
+        const finalGrades = grades.reduce((acc,curr) => acc + curr.value, 0);
+        const gradeStyle = finalGrades >= 70 ? styles.goodGrade : styles.badGrade;
         return (
-          <table className="striped center" key={id}>
+          <table style={styles.table} className="striped center" key={id}>
             <thead>
               <tr>
-                <th style={{width : "20%"}}>Aluno</th>
-                <th style={{width : "20%"}}>Disciplina</th>
-                <th style={{width : "20%"}}>Avaliação</th>
-                <th style={{width : "20%"}}>Nota</th>
-                <th style={{width : "20%"}}>Ações</th>
+                <th style={{ width: "20%" }}>Aluno</th>
+                <th style={{ width: "20%" }}>Disciplina</th>
+                <th style={{ width: "20%" }}>Avaliação</th>
+                <th style={{ width: "20%" }}>Nota</th>
+                <th style={{ width: "20%" }}>Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -61,13 +68,36 @@ export default function GradesControl({ grades, onDelete, onPersist }) {
                       <td>{subject}</td>
                       <td>{type}</td>
                       <td>{isDeleted ? '-' : value}</td>
-                      <td><Actions type="edit"/></td>
+                      <td>
+                        <div>
+                          <Actions
+                            onActionClick={handleActionClick}
+                            id={id} type={isDeleted ? 'add' : 'edit'}
+                          />
+                          {!isDeleted && (
+                            <Actions
+                              type="delete"
+                              id={id}
+                              onActionClick={handleActionClick}
+                            />)}
+                        </div>
+                      </td>
+
                     </tr>
                   )
                 })}
             </tbody>
             <tfoot>
-
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td style={{textAlign : "left"}}>
+                    <strong>Total :</strong>
+                    <span style={gradeStyle}>{finalGrades}</span>
+                    </td>
+                </tr>
             </tfoot>
           </table>
         )
@@ -76,3 +106,21 @@ export default function GradesControl({ grades, onDelete, onPersist }) {
     </div>
   )
 }
+
+const styles = {
+
+  goodGrade: {
+    fontWeight: "bold",
+    color: 'green',
+  },
+
+  badGrade: {
+    fontWeight: "bold",
+    color: 'red',
+  },
+
+  table: {
+    margin: '20px',
+    padding: '10px',
+  },
+};
