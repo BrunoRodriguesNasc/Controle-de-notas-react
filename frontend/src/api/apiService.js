@@ -114,5 +114,21 @@ async function deleteGrade(grade) {
   return response.data;
 }
 
+async function getValidationFromGradeType(type) {
+  const gradeValidation = GRADE_VALIDATION.find(
+    (item) => item.type === type );
 
-export { getAllGrades };
+    const {minValue, maxValue} = gradeValidation;
+
+    return {
+     minValue,
+     maxValue,
+    };
+  };
+
+export {
+   getAllGrades, 
+   insertGrade, 
+   updateGrade, 
+   deleteGrade, 
+   getValidationFromGradeType };
