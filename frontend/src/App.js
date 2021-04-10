@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as api from './api/apiService'
+import Spinner from './components/Spinner';
 
 
  function App() {
@@ -22,7 +23,7 @@ import * as api from './api/apiService'
     <div className="App">
       <h1 className="center" >Controle de notas</h1>
       {allGrades.length > 0 && <p>Notas disponiveis</p>}
-      {allGrades.length == 0 && <p>Carregando notas...</p>}
+      {allGrades.length == 0 && <Spinner/>}
     </div>
   );
 }
