@@ -41,8 +41,9 @@ export default function GradesControl({ grades, onDelete, onPersist }) {
 
     const grade = grades.find(grade => grade.id === id);
 
-    if(type === "delete"){
-      onDelete(grade)
+    if (type === "delete") {
+      onDelete(grade);
+      return;
     };
 
     onPersist(grade);
@@ -53,7 +54,7 @@ export default function GradesControl({ grades, onDelete, onPersist }) {
     <div className="container center">
       {tableGrades.map(({ id, grades }) => {
 
-        const finalGrades = grades.reduce((acc,curr) => acc + curr.value, 0);
+        const finalGrades = grades.reduce((acc, curr) => acc + curr.value, 0);
         const gradeStyle = finalGrades >= 70 ? styles.goodGrade : styles.badGrade;
         return (
           <table style={styles.table} className="striped center" key={id}>
@@ -95,16 +96,16 @@ export default function GradesControl({ grades, onDelete, onPersist }) {
                 })}
             </tbody>
             <tfoot>
-                <tr>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td style={{textAlign : "left"}}>
-                    <strong>Total :</strong>
-                    <span style={gradeStyle}>{finalGrades}</span>
-                    </td>
-                </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style={{ textAlign: "left" }}>
+                  <strong>Total :</strong>
+                  <span style={gradeStyle}>{finalGrades}</span>
+                </td>
+              </tr>
             </tfoot>
           </table>
         )

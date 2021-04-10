@@ -41,24 +41,41 @@ function App() {
     setIsModalOpen(true);
   };
 
-  const handlePersistData = () => {
+  const handlePersistData = async (formData) => {
+
+    const { id, newValue } = formData;
+
+    const newGrades = Object.assign([], allGrades);
+
+    const gradeToPersist = newGrades.find((grade) => grade.id === id);
+    gradeToPersist.value = newValue;
+
+    if (gradeToPersist.isDeleted) {
+      gradeToPersist.isDeleted = false;
+      await api.insertGrade(gradeToPersist);
+    }
+    else {
+      await api.updateGrade(gradeToPersist)
+    }
+
+    setIsModalOpen(false);
   };
 
   const handleClose = () => {
-    setIsModalOpen(false)
+    setIsModalOpen(false);
   };
 
   return (
     <div className="App">
       <h1 className="center" >Controle de notas</h1>
-      {allGrades.length == 0 && <Spinner />}
+      {allGrades.length === 0 && <Spinner />}
       {allGrades.length > 0 && (
         <GradesControl
           grades={allGrades}
           onDelete={handleDelete}
           onPersist={handlePersist} />
       )}
-  
+
       {isModalOpen && (
         <ModalGrade
           onSave={handlePersistData}
@@ -68,6 +85,6 @@ function App() {
     </div>
   )
 }
-  
+
 
 export default App;
