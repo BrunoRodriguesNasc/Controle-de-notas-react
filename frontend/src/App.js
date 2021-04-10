@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as api from './api/apiService'
-import 'materialize-css/dist/css/materialize.min.css'
+
 
  function App() {
-    const testApi = async () =>{
-    const result = await api.getAllGrades();
-    console.log(result)
-  }
-  testApi();
+
+  const [allGrades, setAllGrades] = useState([]);
+  const [selectGrades, setSelectedGrade] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState([]);
+
+  useEffect(() => {
+    const getGrades = async () =>{
+      const grades =  await api.getAllGrades();
+      setTimeout(()=> {
+        setAllGrades(grades);
+      }, 2000);
+    };
+    getGrades();
+  },[]);
+
   return (
     <div className="App">
-      <p>Olá Mundo</p> 
+      <h1 className="center" >Controle de notas</h1>
+      {allGrades.length > 0 && <p>Notas disponiveis</p>}
+      {allGrades.length == 0 && <p>Carregando notas...</p>}
     </div>
   );
 }
